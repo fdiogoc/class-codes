@@ -24,27 +24,17 @@ img_gray = np.mean(imagem_color_arr, axis=2)
 num_color = st.selectbox("Quantas cores?", \
     (2, 4, 8, 16, 32, 64, 128))
 
-# st.text(num_color)
-# img_gray[img_gray != limiar] = 255
-if num_color == 2:
-    img_gray[img_gray < 127]  = 0
-    img_gray[img_gray >= 127]  = 255
-elif num_color == 4:
-    img_gray[img_gray < 64]  = 0
-    img_gray[(64 < img_gray) & (img_gray < 128)]  = 64
-    img_gray[(128 < img_gray) & (img_gray < 192)]  = 128
-    img_gray[img_gray > 192]  = 192
-else:
-    img_gray[img_gray < 32]  = 0
-    img_gray[(32 < img_gray) & (img_gray < 64)]  = 32
-    img_gray[(64 < img_gray) & (img_gray < 96)]  = 64
-    img_gray[(96 < img_gray) & (img_gray < 128)]  = 128
-    img_gray[(128 < img_gray) & (img_gray < 160)]  = 160
-    img_gray[(160 < img_gray) & (img_gray < 192)]  = 192
-    img_gray[(192 < img_gray) & (img_gray < 224)]  = 224
-    img_gray[img_gray > 224]  = 255
+
+diff = int(255/num_color)
+for x in range(0,num_color):
+    if(x == 0):
+        img_gray[img_gray > 255-diff]  = 255
+    else:
+        img_gray[(255-(diff*(x+1)) < img_gray) & (img_gray < 255-(diff*x))]  = 255-(diff*x)
 
 
+
+print(img_gray)
 new_image = Image.fromarray(img_gray)
 
 # plt.axis('off')
